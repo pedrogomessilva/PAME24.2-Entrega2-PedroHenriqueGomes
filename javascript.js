@@ -14,19 +14,6 @@ class reservas{
         this.saida=saida;
     }
 
-    Alterar_chegada(){
-
-    }
-
-    Alterar_saida(){
-
-    }
-    
-    Cancelar(){
-
-    }
-
-
 }
 
 
