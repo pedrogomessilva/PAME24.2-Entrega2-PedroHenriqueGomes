@@ -1,18 +1,38 @@
-//arquivo de teste para funcionarios_logados
 
 //Lembrete: pesquisar maneira de criar objetos dentro das classes diferenciando-os automaticamente se possivel,
 //para evitar sobreposicao ou redefinicao acidental de um objeto adicionado anteriormente
 
-//as listas abaixo foram criadas para realizer testes com o codigo
-//let lista_quartos = [["quarto01", "1", "100", "Sim", "Solteiro"],["quarto02", "1", "150", "Nao","Casal"],["quarto03", "2", "280", "Sim","Luxo"]];
-//let lista_clientes = [[345,"Victor", "1/1/2000", 22222222,"victor@gmail.com","java"],"Joao","Ana"];
-//let lista_reserva = [["quarto01", 345, "feita","25/01/2025","30/01/2025"],["quarto03", 100,"adiada","21/12/2025","29/12/2025"]];
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//INSTRUCOES PARA USO DO SISTEMA: Para facilitar o uso por parte do cliente ou funcionario, o sistema usa
+//diversos menus para estruturar a sequencia de execucao das tarefas solicitadas, com as escolhas sendo feitas
+//ao inserir apenas um digito que corresponda a tarefa desejada pelo usuario. Ao finalizar a acao, o usuario eh 
+//sempre redirecionado para o menu principal.
+
+//Inicialmente, eh exibido o menu principal, no qual o usuario podera definir se deseja fazer login(caso ja tenha uma
+//conta existente no sistema) ou criar uma nova conta se cadastrando do zero no sistema do hotel. Esse modelo eh seguido
+//tanto para clientes quanto para funcionarios do hotel. Existe tambem a opcao de desligar o sistema, a qual interrompe
+//o terminal, deletando os dados inseridos durante o funcionamento.
+
+//Uma vez logado no sistema, o cliente tera acesso as funcionalidades: ver dados, consultar quartos, fazer reserva,
+//cancelar reserva, verificar os dados da sua reserva(caso esteja registrada no sistema) e alterar dados. A definicao
+//da opcao desejada se da, novamente, atraves de um menu especifico para a classe de clientes, inserindo um digito
+//correspondente a opcao desejada.
+
+//Para os funcionarios logados, estao disponiveis as opcoes: ver dados, ver lista de reservas, ver lista de quartos, 
+//ver lista de clientes, alterar uma reserva, adicionar quarto e excluir quarto. A definicao de escolha sera da mesma
+//forma que para os clientes. 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-//classe quartos sera usada em uma das funcionalidades de funcionario_logado
-
+//essa lista guardara todos os dados dos clientes cadastrados no sistema do hotel!
 let lista_clientes=[];
 
+//A classe quartos sera usada pela classe funcionarios logados dentro do sistema principal
+//contem dados como o ID do quarto (numeracao do quarto), numero de camas, valor da diaria, se o quarto esta 
+// disponivel (Sim) ou Ocupado (Nao) e a categoria(no exemplo foram criadas as seguintes: Solteiro/ Casal/ Luxo)
 class quarto{
     constructor(ID_quarto,camas, valor, disponivel, categoria){
         
@@ -29,12 +49,17 @@ class quarto{
 
 }
 
+    //esses exemplos de quartos foram criados durante a fase de testes do codigo, caso nao deseje usa-los basta
+    //comentar-los ou apagar-los.
+
     let quarto01 = new quarto("quarto01", "1", "100" , "Sim", "Solteiro" );
     let quarto02 = new quarto("quarto02", "1", "150" , "Nao", "Casal" );
     let quarto03 = new quarto("quarto03", "2", "280" , "Sim", "Luxo" );
 
+
     //criando a lista de quartos para o exemplo adicionando objetos criados a partir da classe em uma lista
     //vazia
+    //a lista de quartos ira armazenar as informacoes sobre todos os quartos dentro do sistema!
     let lista_quartos=[];
 
     lista_quartos.push(quarto01)
@@ -46,6 +71,9 @@ class quarto{
     let lista_reserva=[];
 
 
+    //a classe reservas ira guardar todos os dados referentes as reservas feitas no hotel, o ID do quarto( que eh apenas
+    //a numeracao do quarto ex: quarto01), o ID do cliente que fez a reserva, o status da reserva (pendente, cancelada,
+    //adiada ou realizada), a data de check-in do cliente e a data de check-out
     class reservas{
         constructor(ID_quarto, ID_cliente, status,entrada,saida){
             this.ID_quarto= ID_quarto;
@@ -57,15 +85,16 @@ class quarto{
     
     }
 
+    //essas reservas foram criadas na fase de testes, podem ser eliminadas caso o hotel deseje
     let reserva1 = new reservas("quarto01","345","Feita","21/03/2025", "29/03/2025");
     let reserva2 = new reservas("quarto01","000","Adiada","10/06/2025", "10/07/2025");
 
-
+    //a lista_reserva guardara todas as informacoes sobre as reservas feitas!
     lista_reserva.push(reserva1)
     lista_reserva.push(reserva2)
     
 
-//criando a classe cliente logado contendo os dados necessarios
+//criando a classe cliente logado contendo o ID do cliente, o nome do cliente, a data de nascimento, cpf, email e senha 
 class cliente_logado{
     constructor(ID_cliente, nome_cli, aniversario, cpf,email,senha){
         this.ID_cliente=ID_cliente;
@@ -78,6 +107,7 @@ class cliente_logado{
     }
 
     Ver_dados_cli(){
+        //esse metodo sera responsavel por exibir os dados atuais do usuario salvos no sistema
 
         console.log('Nome: ', this.nome_cli);
         console.log('ID: ', this.ID_cliente);
@@ -88,6 +118,7 @@ class cliente_logado{
     }
 
     Consultar_quartos(){
+        //esse metodo sera responsavel por exibir todos os quartos cadastrados no sistema do hotel
 
         console.log("Exibindo todos os quartos: \n")
         console.log(lista_quartos);
@@ -96,6 +127,13 @@ class cliente_logado{
     }
 
     Fazer_reserva(){
+        //esse metodo ira, primeiro, exibir os quartos do hotel e suas caracteristicas, depois ira realizar a reserva 
+        //para o cliente, pedindo informacoes como quarto desejado, data de chegada, data de saida e o ID do cliente.
+        //Por fim, a nova reserva sera adicionada a lista de reservas do hotel
+
+        console.log("\nAqui esta a lista de quartos do nosso hotel:\n")
+
+        console.log(lista_quartos);
 
         var requisicao = require('readline-sync')
         var quarto_reservado = requisicao.question("Qual quarto deseja reservar? Exemplo: quarto10 \n")
@@ -109,9 +147,6 @@ class cliente_logado{
 
         let reserva_nova = new reservas(quarto_reservado, ID_reserva, "Feita", inicio_reserva, fim_reserva);
 
-
-        
-
         lista_reserva.push(reserva_nova)
 
         console.log("Sua reserva foi confirmada com sucesso")
@@ -122,6 +157,8 @@ class cliente_logado{
     }
 
     Cancelar_reserva(){
+        //esse metodo ira cancelar a reserva feita por um cliente, identificando-a atraves do ID do cliente e entao
+        //ira deletar a reserva encontrada da lista que contem os dados das reservas do hotel
 
         var requisicao = require('readline-sync')
         var ID_verificar = requisicao.question("Por favor, insira o  seu ID: \n")
@@ -161,6 +198,8 @@ class cliente_logado{
     }
 
     Verificar_reserva(){
+        //esse metodo vasculha a lista de reservas do hotel e exibe para o usuario apenas a reserva feita por ele
+        //usando o ID do cliente para identificar a reserva.
 
         var requisicao = require('readline-sync')
         var ID_verificar = requisicao.question("Por favor, insira o  seu ID: \n")
@@ -184,6 +223,8 @@ class cliente_logado{
     }
 
     Alterar_dados(){
+        //esse metodo exibe os dados atuais do cliente e oferece a opcao de alterar-los
+        //Lembrete: NAO TERMINADA
 
         console.log("Dados atuais: \n")
         console.log('Nome: ', this.nome_cli);
@@ -237,15 +278,15 @@ class cliente_logado{
 
 }
 
-
+// esses clientes tambem foram criados durante a fase de testes, podem ser omitidos sem complicacoes
 let cliente1 = new cliente_logado("345","Joao das Couves","5/11/1961","88888888","joao@gmail.com","password");
-let cliente2 = new cliente_logado("000","Lisa Simpson","8/9/2000","231334212","lisa@gmail.com","senha");
+let cliente2 = new cliente_logado("000","Jim Carrey","8/9/2000","231334212","lisa@gmail.com","senha123");
 
 lista_clientes.push(cliente1);
 lista_clientes.push(cliente2);
 
 
-//criando a classe funcionario logado contendo os dados necessarios
+//criando a classe funcionario logado contendo o ID do funcionario, o nome do funcionario, o cpf, email e senha
 //OBS: 6 de 7 atributos funcionais
 class funcionario_logado{
     constructor(ID_funcionario, nome_func, cpf, email, senha){
@@ -257,7 +298,8 @@ class funcionario_logado{
         
     }
 
-    Ver_dados_func(){ //exibe os dados dos funcionarios; funcional
+    Ver_dados_func(){ 
+        //esse metodo exibe os dados do funcionario
         
         console.log('Nome: ', this.nome_func);
         console.log('ID: ', this.ID_funcionario);
@@ -265,16 +307,23 @@ class funcionario_logado{
         console.log('E-mail: ', this.email);        
     }
 
-    Lista_reservas(){  //exibe a lista de reservas; funcional
+    Lista_reservas(){ 
+        //esse metodo exibe a lista de todas as reservas do hotel;
         console.log(lista_reserva); 
     }
 
-    Lista_quartos(){  //exibe a lista de todos os quartos do hotel; 
+    Lista_quartos(){
+        //esse metodo exibe a lista de todos os quartos do hotel; 
         console.log(lista_quartos);
     }
 
-    Lista_clientes(){ //exibe a lista de todos os clientes do hotel
-        
+    Lista_clientes(){ 
+        //exibe a lista de todos os clientes do hotel;
+
+        //OBS: Ao exibir a lista de clientes, tambem sao revelados os dados dos clientes, portanto, para evitar que
+        //a senha do cliente fosse exposta, foi criada a lista auxiliar abaixo.
+        //A lista auxiliar recebe os dados dos clientes, porem a senha do cliente eh trocada para "**********", assim
+        //a senha do cliente nao sera acessada pelos funcionarios
         var lista_auxiliar=[]
 
         lista_auxiliar = lista_clientes;
@@ -290,6 +339,8 @@ class funcionario_logado{
     }
 
     Alterar_reserva(){
+        //esse metodo permite que funcionarios alterem os dados de uma reserva registrada no sistema, identificando a
+        //reserva a partir do ID do cliente e definindo o dado a ser alterado usando um menu basico
         
         console.log("\n Aqui estao as reservas marcadas no momento: \n");
 
@@ -384,11 +435,10 @@ class funcionario_logado{
 
     }
 
-    Adicionar_quarto(){ //acessa a lista de quartos e adiciona um quarto definido pelo funcionario; funcional
+    Adicionar_quarto(){
+        //esse metodo acessa a lista de quartos e adiciona na lista um quarto com informacoes definidas pelo funcionario;
         var requisicao = require('readline-sync')
-        var quarto_adicionado = requisicao.question("Qual quarto deseja adicionar? Exemplo: quarto10 \n")
-
-        //quarto_novo= quarto_adicionado;
+        var quarto_adicionado = requisicao.question("Qual quarto deseja adicionar? Exemplo: quarto08 \n")
 
         var add_valor = requisicao.question("Qual o valor da diaria?\n")
         var add_categoria = requisicao.question("Qual o tipo de quarto? (Solteiro/Casal/Luxo) \n")
@@ -396,12 +446,12 @@ class funcionario_logado{
 
         let quarto_novo = new quarto(quarto_adicionado, add_camas, add_valor, "Sim", add_categoria ); 
         lista_quartos.push(quarto_novo)
-        //criando o novo quarto
 
         console.log(lista_quartos);
     }
 
-    Excluir_quarto(){ //acessa a lista de quartos e exclui um quarto definido pelo funcionario; funcional
+    Excluir_quarto(){ 
+        //esse metodo acessa a lista de quartos e exclui dela um quarto definido pelo funcionario; 
         
         console.log(lista_quartos);
 
@@ -444,9 +494,13 @@ class funcionario_logado{
     }
 
   }
-    
+   
+ 
+
+//a lista_funcionarios ira guardar os dados de todos os funcionarios cadastradados no sistema
 let lista_funcionarios=[]
 
+//funcionarios genericos criados para facilitar a fase de testes do codigo
 let funcionario1 = new funcionario_logado("123","Andre","12345678910","andre@gmail.com", "senha");
 let funcionario2 = new funcionario_logado("789","Maria","99999999999","maria@gmail.com", "password");
 
@@ -455,6 +509,7 @@ lista_funcionarios.push(funcionario2)
 
 
 
+//a classe sistema eh responsavel por manejar todas as funcoes, classes, menus e opcoes do programa
 class sistema{
     constructor(){
         
