@@ -109,11 +109,23 @@ class cliente_logado{
     Ver_dados_cli(){
         //esse metodo sera responsavel por exibir os dados atuais do usuario salvos no sistema
 
-        console.log('Nome: ', this.nome_cli);
-        console.log('ID: ', this.ID_cliente);
-        console.log('CPF: ', this.cpf);
-        console.log('E-mail: ', this.email);
-        console.log('Senha: ', this.senha);
+        var requisicao = require('readline-sync')
+        var ID_confirma = requisicao.question("Por favor, insira o  seu ID: \n")
+
+        var total_clientes = lista_clientes.length;
+
+        for(let i=0; i< total_clientes; i=i+1){
+
+            
+            if(lista_clientes[i].ID_cliente==ID_confirma){
+
+                console.log("Aqui estao os seus dados:");
+
+                console.log(lista_clientes[i]);
+        
+            }
+        
+    }
 
     }
 
@@ -138,6 +150,29 @@ class cliente_logado{
         var requisicao = require('readline-sync')
         var quarto_reservado = requisicao.question("Qual quarto deseja reservar? Exemplo: quarto10 \n")
 
+        var todos_quartos = lista_quartos.length
+
+        for(let i=0; i< todos_quartos; i=i+1){
+
+
+            if (lista_quartos[i].ID_quarto== quarto_reservado){
+
+
+                if (lista_quartos[i].disponivel== "Nao" || lista_quartos[i].disponivel=="nao" || lista_quartos[i].disponivel=="NAO"){
+
+                    console.log("\nInfelizmente esse quarto nao se encontra disponivel no momento.\n");
+    
+                    console.log("\nPor favor, escolha outra opcao disponivel no momento.");
+    
+                    sistem1.menu();
+    
+                }
+            
+            }
+
+        
+        }
+
         var inicio_reserva = requisicao.question("Quando comecara a sua estadia no hotel? Use o formato dd/mm/aaaa \n")
 
         var fim_reserva = requisicao.question("Quando terminara a sua estadia no hotel? Use o formato dd/mm/aaaa \n")
@@ -151,10 +186,23 @@ class cliente_logado{
 
         console.log("Sua reserva foi confirmada com sucesso")
 
-        console.log(lista_reserva)
+        var total_reservas = lista_reserva.length
+
+        for(let m=0; m< total_reservas; m=m+1){
+
+            if(lista_reserva[m].ID_cliente== ID_reserva){
+
+                console.log(lista_reserva[m]);
+            }
+
+
+        }   
+
+        
         
 
     }
+
 
     Cancelar_reserva(){
         //esse metodo ira cancelar a reserva feita por um cliente, identificando-a atraves do ID do cliente e entao
@@ -170,25 +218,19 @@ class cliente_logado{
             if (lista_reserva[i].ID_cliente == ID_verificar){
 
                 console.log(lista_reserva[i]);
-
-                const index= i;
-
+            
                 var confirmacao= requisicao.question("Tem certeza que deseja cancelar sua reseva? Sim/Nao \n")
         
                 if(confirmacao == "Sim" || confirmacao=="sim" || confirmacao=="SIM"){
 
-                    if (index > -1) {
-                        lista_quartos.splice(index, 1);
-                    
-                    }
-
+                    lista_reserva[i].status="Cancelada"
 
                     console.log("Pronto, sua reserva foi cancelada com sucesso \n");
 
-                    console.log(lista_reserva);
+                    console.log(lista_reserva[i]);
 
                 }
-                return lista_reserva[i]
+                return lista_reserva
             }
 
             console.log("Ok, sua reserva esta mantida! \n");
@@ -226,14 +268,10 @@ class cliente_logado{
         //esse metodo exibe os dados atuais do cliente e oferece a opcao de alterar-los
         //Lembrete: NAO TERMINADA
 
-        console.log("Dados atuais: \n")
-        console.log('Nome: ', this.nome_cli);
-        console.log('ID: ', this.ID_cliente);
-        console.log('CPF: ', this.cpf);
-        console.log('E-mail: ', this.email);
-        console.log('Senha:', this.senha);
-
-
+        
+        var requisicao = require('readline-sync')
+        var mudar_dado = requisicao.question("\n Qual a sua ID atual? Exemplo: 000 \n")
+        
         console.log("Selecione o dado que deseja alterar com o numero correspondente: \n");
         console.log("1- Alterar Nome");
         console.log("2- Alterar ID");
@@ -241,46 +279,122 @@ class cliente_logado{
         console.log("4- Alterar email");
         console.log("Pressione qualquer outro botao para sair")
 
-        var requisicao = require('readline-sync')
         var dado_alterado = requisicao.question("Por favor, escolha uma das opcoes acima: \n")
 
-        if(dado_alterado=="1"){
 
-            //mudar nome
-            var nome_novo = requisicao.question("Por favor, digite o seu nome atualizado: \n")
+        var total_clientes = lista_clientes.length;
 
-            cliente_logado.setAttribute(this.nome_cli,nome_novo);
+        for(let i=0; i< total_clientes; i=i+1){
+
+            if(lista_clientes[i].ID_cliente==mudar_dado){
+
+                console.log("Aqui estao seus dados atuais");
+
+                console.log(lista_clientes[i]);
+
+
+                if(dado_alterado=="1"){
+
+                    var nome_novo = requisicao.question("\nPor favor, digite o seu novo nome: \n")
+
+                    lista_clientes[i].nome_cli=nome_novo;
+
+                    console.log(lista_clientes[i]);
+
+                    console.log("\nMudanca feita com sucesso!\n");
 
 
 
+                } else if(dado_alterado=="2"){
+
+                    var ID_novo = requisicao.question("Por favor, digite o seu novo ID: \n")
+
+                    var total_clientes = lista_clientes.length;
+
+                    for(let i=0; i< total_clientes; i=i+1){
+
+                
+                        if (lista_clientes[i].ID_cliente == ID_novo){
+        
+                            console.log("\nEsse ID ja existe no nosso banco de dados, tente outra combinacao:\n")
+                        
+                            sistem1.menu();
+        
+                        }
+        
+                    }
+                    lista_clientes[i].ID_cliente= ID_novo;
+
+                    console.log(lista_clientes[i]);
+
+                    console.log("\nMudanca feita com sucesso!\n");
 
 
-        } else if(dado_alterado=="2"){
+                } else if(dado_alterado=="3"){
 
-            //mudar  id do cliente
+                    var cpf_novo = requisicao.question("Por favor, digite o seu novo CPF: \n")
 
-        } else if(dado_alterado=="3"){
+                    if(cpf_novo>99999999999 || cpf_novo<10000000000){
+            
+                        // Aqui a verificacao sera feita para analisar se o CPF inserido possui 11 digitos, tambem 
+                        // eh assumido que nao havera CPF cujo o primeiro digito sera 0
+            
+                            console.log("CPF invalido. Tente novamente");
+            
+                            sistem1.menu();
+            
+                        }
+            
+                        for(let i=0; i< total_clientes; i=i+1){
+            
+                            
+                            if (lista_clientes[i].cpf == cpf_novo){
+            
+                                console.log("\nEsse CPF ja existe no nosso banco de dados!\n")
+                            
+                                sistem1.menu();
+            
+                            }
+            
+                        }
+                    
+                    lista_clientes[i].cpf= cpf_novo;
 
-            //mudar cpf do cliente
+                    console.log(lista_clientes[i]);
 
-        } else if(dado_alterado=="4"){
+                    console.log("\nMudanca feita com sucesso! \n");
 
-            //mudar email
+               
+                } else if(dado_alterado=="4"){
 
-        } else{
+                    var email_novo = requisicao.question("Por favor, digite o seu novo email: \n")
 
-            console.log("Sem alteracao de dados");
+                    lista_clientes[i].email= email_novo;
+
+                    console.log(lista_clientes[i]);
+
+                    console.log("\nMudanca feita com sucesso! \n");
+
+
+
+                } else{
+
+                    console.log("Digito invalido");
+
+                }
+                
+
+            }
         }
 
-
     }
-
+       
 
 }
 
 // esses clientes tambem foram criados durante a fase de testes, podem ser omitidos sem complicacoes
-let cliente1 = new cliente_logado("345","Joao das Couves","5/11/1961","88888888","joao@gmail.com","password");
-let cliente2 = new cliente_logado("000","Jim Carrey","8/9/2000","231334212","lisa@gmail.com","senha123");
+let cliente1 = new cliente_logado("345","Joao das Couves","5/11/1961","88888888888","joao@gmail.com","password");
+let cliente2 = new cliente_logado("000","Jim Carrey","8/9/2000","23133421214","jim@gmail.com","senha123");
 
 lista_clientes.push(cliente1);
 lista_clientes.push(cliente2);
@@ -301,10 +415,29 @@ class funcionario_logado{
     Ver_dados_func(){ 
         //esse metodo exibe os dados do funcionario
         
-        console.log('Nome: ', this.nome_func);
-        console.log('ID: ', this.ID_funcionario);
-        console.log('CPF: ', this.cpf);
-        console.log('E-mail: ', this.email);        
+
+        var requisicao = require('readline-sync')
+        var ID_conf_func = requisicao.question("Por favor, insira o seu ID de funcionario: \n")
+
+        var total_funcionarios = lista_funcionarios.length;
+
+        for(let i=0; i< total_funcionarios; i=i+1){
+
+            
+            if(lista_funcionarios[i].ID_funcionario==ID_conf_func){
+
+                console.log("Aqui estao os seus dados:");
+
+                console.log(lista_funcionarios[i]);
+        
+            }
+        
+    }
+
+        //console.log('Nome: ', this.nome_func);
+        //console.log('ID: ', this.ID_funcionario);
+        //console.log('CPF: ', this.cpf);
+        //console.log('E-mail: ', this.email);        
     }
 
     Lista_reservas(){ 
@@ -487,10 +620,10 @@ class funcionario_logado{
                 return lista_quartos[i]
             }
 
-            console.log("Nenhum quarto foi deletado do sistema \n");
 
         }
 
+        console.log("Nenhum quarto foi deletado do sistema \n");
     }
 
   }
@@ -569,7 +702,6 @@ class sistema{
 
                         if(opcao_cliente == "1"){
 
-                                console.log("\n Aqui estao os seus dados: \n")
 
                                 cliente_operacional.Ver_dados_cli();
 
@@ -622,6 +754,7 @@ class sistema{
                                 console.log("\n Iniciando funcao para alterar dados \n")
                         
                                 cliente_operacional.Alterar_dados();
+
                                 
                                 console.log("\n Redirecionado de volta para o menu principal!\n \n")
 
@@ -646,11 +779,17 @@ class sistema{
                     
 
 
-                }
+                
 
             }
 
-           
+            }
+            console.log("\nID nao encontrado. Tente fazer um novo cadastro.\n");
+            
+            sistem1.menu();
+        
+
+        
 
         } else if(inicio=="2"){
 
@@ -660,9 +799,50 @@ class sistema{
 
             var novo_cliente_ID = requisicao.question("Crie um ID de 3 numeros por favor:\n")
 
+            var total_clientes = lista_clientes.length;
+
+            for(let i=0; i< total_clientes; i=i+1){
+
+                
+                if (lista_clientes[i].ID_cliente == novo_cliente_ID){
+
+                    console.log("\nEsse ID ja existe no nosso banco de dados, tente outra combinacao:\n")
+                
+                    sistem1.menu();
+
+                }
+
+            }
+
             var novo_cliente_aniversario = requisicao.question("Digite sua data de nascimento: Use o formato dd/mm/aaaa\n")
 
             var novo_cliente_cpf = requisicao.question("Insira seu CPF por favor:\n")
+
+            if(novo_cliente_cpf>99999999999 || novo_cliente_cpf<10000000000){
+            
+            // Aqui a verificacao sera feita para analisar se o CPF inserido possui 11 digitos, tambem eh assumido que
+            // nao havera CPF cujo o primeiro digito sera 0
+
+                console.log("CPF invalido. Tente novamente");
+
+                sistem1.menu();
+
+            }
+
+            for(let i=0; i< total_clientes; i=i+1){
+
+                
+                if (lista_clientes[i].cpf == novo_cliente_cpf){
+
+                    console.log("\nEsse CPF ja existe no nosso banco de dados!\n")
+                
+                    sistem1.menu();
+
+                }
+
+            }
+
+
 
             var novo_cliente_email = requisicao.question("Insira seu email por favor:\n")
 
@@ -674,9 +854,8 @@ class sistema{
 
             lista_clientes.push(cliente3);
 
-            console.log("Aqui estao seus dados de cadastro! Tenha uma otima estadia conosco!\n")
-            cliente3.Ver_dados_cli();
-
+            console.log("Cadastro completo! Tenha uma otima estadia conosco!\n")
+            
             sistem1.menu();
 
         } else if(inicio=="3"){
@@ -705,7 +884,7 @@ class sistema{
 
                         console.log("1- Conferir meus dados");
                         console.log("2- Lista de quartos");
-                        console.log("3- Lista de reseras");
+                        console.log("3- Lista de reservas");
                         console.log("4- Lista de clientes");
                         console.log("5- Alterar status de reserva");
                         console.log("6- Adicionar quarto");
@@ -716,7 +895,6 @@ class sistema{
 
                         if(opcao_func=="1"){
 
-                                console.log("\n Aqui estao os seus dados: \n")
                                 func_operacional.Ver_dados_func();
 
                                 console.log("\n Redirecionado de volta para o menu principal!\n \n")
@@ -726,7 +904,7 @@ class sistema{
                         } else if(opcao_func=="2"){
                                 
                                 console.log("\n Aqui esta a lista de quartos: \n")
-                                func_operacional.Consultar_quartos();
+                                func_operacional.Lista_quartos();
 
                                 console.log("\n Redirecionado de volta para o menu principal!\n \n")
 
@@ -794,10 +972,10 @@ class sistema{
                                  
                     }
 
-                }
+                } 
+            
 
             }
-
 
 
         } else if (inicio=="4"){
@@ -808,7 +986,46 @@ class sistema{
 
             var novo_func_ID = requisicao.question("Crie um ID de 3 numeros por favor:\n")
 
+
+            for(let i=0; i< todos_funcionarios; i=i+1){
+
+                if (lista_funcionarios[i].ID_funcionario == novo_func_ID){
+
+                    console.log("\nEsse ID ja existe no nosso banco de dados, tente outra combinacao:\n")
+            
+                    sistem1.menu();
+
+                }   
+
+            }
+
+            var total_funcionarios= lista_funcionarios.length;
+
             var novo_func_cpf = requisicao.question("Insira seu CPF por favor:\n")
+
+            if(novo_func_cpf>99999999999 || novo_func_cpf<10000000000){
+            
+                // Aqui a verificacao sera feita para analisar se o CPF inserido possui 11 digitos, tambem eh assumido que
+                // nao havera CPF cujo o primeiro digito sera 0
+    
+                    console.log("CPF invalido. Tente novamente");
+    
+                    sistem1.menu();
+    
+                }
+    
+                for(let i=0; i< total_funcionarios; i=i+1){
+    
+                    
+                    if (lista_funcionarios[i].cpf==novo_func_cpf){
+    
+                        console.log("\nEsse CPF ja existe no nosso banco de dados!\n")
+                    
+                        sistem1.menu();
+    
+                    }
+
+                }
 
             var novo_func_email = requisicao.question("Insira seu email por favor:\n")
 
@@ -820,11 +1037,12 @@ class sistema{
             lista_funcionarios.push(funcionario3);
 
             console.log("Aqui estao seus dados de cadastro! Estamos ansiosos para trabalhar com voce!\n")
-            funcionario3.Ver_dados_func();
+            
 
             sistem1.menu();
 
 
+            
         } else if(inicio=="5"){
 
             console.log("Tem certeza que deseja fechar o programa? Todos os dados salvos serao perdidos! \n" );
@@ -833,7 +1051,7 @@ class sistema{
         
             if(desligar == "Sim" || desligar=="sim" || desligar=="SIM"){
 
-                return null;
+                return lista_quartos;
 
             } else{
                 console.log("Comando de desligamento abortado. Redirecionando de volta para o menu principal \n");
