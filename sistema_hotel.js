@@ -1,7 +1,4 @@
 
-//Lembrete: pesquisar maneira de criar objetos dentro das classes diferenciando-os automaticamente se possivel,
-//para evitar sobreposicao ou redefinicao acidental de um objeto adicionado anteriormente
-
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -42,8 +39,6 @@ class quarto{
         this.disponivel=disponivel;
         this.categoria=categoria;
         
-        //Lembrete: verificar a quantidade de quartos disponiveis de acordo com a categoria (exemplo: 5 solteiro, 3 casal,
-        //1 luxo)
         
     }
 
@@ -266,7 +261,6 @@ class cliente_logado{
 
     Alterar_dados(){
         //esse metodo exibe os dados atuais do cliente e oferece a opcao de alterar-los
-        //Lembrete: NAO TERMINADA
 
         
         var requisicao = require('readline-sync')
@@ -315,6 +309,11 @@ class cliente_logado{
 
                 
                         if (lista_clientes[i].ID_cliente == ID_novo){
+
+                            //as verificacoes da unicidade do ID se dao apenas dentro da mesma classe, ou seja
+                            //2 clientes nao podem ter o mesmo ID de cliente
+                            //2 funcionarios nao podem ter o mesmo ID de funcionario
+                            //1 cliente e 1 funcionario podem ter o mesmo ID, ja que sao considerados diferentes no codigo 
         
                             console.log("\nEsse ID ja existe no nosso banco de dados, tente outra combinacao:\n")
                         
@@ -337,7 +336,7 @@ class cliente_logado{
                     if(cpf_novo>99999999999 || cpf_novo<10000000000){
             
                         // Aqui a verificacao sera feita para analisar se o CPF inserido possui 11 digitos, tambem 
-                        // eh assumido que nao havera CPF cujo o primeiro digito sera 0
+                        // considera-se que nao havera CPF cujo o primeiro digito sera 0
             
                             console.log("CPF invalido. Tente novamente");
             
@@ -433,11 +432,7 @@ class funcionario_logado{
             }
         
     }
-
-        //console.log('Nome: ', this.nome_func);
-        //console.log('ID: ', this.ID_funcionario);
-        //console.log('CPF: ', this.cpf);
-        //console.log('E-mail: ', this.email);        
+        
     }
 
     Lista_reservas(){ 
@@ -806,6 +801,11 @@ class sistema{
                 
                 if (lista_clientes[i].ID_cliente == novo_cliente_ID){
 
+                    //as verificacoes da unicidade do ID se dao apenas dentro da mesma classe, ou seja
+                    //2 clientes nao podem ter o mesmo ID de cliente
+                    //2 funcionarios nao podem ter o mesmo ID de funcionario
+                    //1 cliente e 1 funcionario podem ter o mesmo ID, ja que sao considerados diferentes no codigo 
+
                     console.log("\nEsse ID ja existe no nosso banco de dados, tente outra combinacao:\n")
                 
                     sistem1.menu();
@@ -849,7 +849,7 @@ class sistema{
             var novo_cliente_senha = requisicao.question("Crie uma senha:\n")
 
 
-            // (ID_cliente, nome_cli, aniversario, cpf,email,senha)
+
             let cliente3 = new cliente_logado(novo_cliente_ID, novo_cliente_nome, novo_cliente_aniversario, novo_cliente_cpf, novo_cliente_email, novo_cliente_senha);
 
             lista_clientes.push(cliente3);
@@ -990,6 +990,10 @@ class sistema{
             for(let i=0; i< todos_funcionarios; i=i+1){
 
                 if (lista_funcionarios[i].ID_funcionario == novo_func_ID){
+                    //as verificacoes da unicidade do ID se dao apenas dentro da mesma classe, ou seja
+                    //2 clientes nao podem ter o mesmo ID de cliente
+                    //2 funcionarios nao podem ter o mesmo ID de funcionario
+                    //1 cliente e 1 funcionario podem ter o mesmo ID, ja que sao considerados diferentes no codigo 
 
                     console.log("\nEsse ID ja existe no nosso banco de dados, tente outra combinacao:\n")
             
@@ -1036,7 +1040,7 @@ class sistema{
 
             lista_funcionarios.push(funcionario3);
 
-            console.log("Aqui estao seus dados de cadastro! Estamos ansiosos para trabalhar com voce!\n")
+            console.log("\nEstamos ansiosos para trabalhar com voce!\n")
             
 
             sistem1.menu();
